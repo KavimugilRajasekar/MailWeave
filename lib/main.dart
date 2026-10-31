@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'screens/home_screen.dart';
 import 'screens/intro_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Lock orientation to portrait — Android-only app.
-  SystemChrome.setPreferredOrientations([
+  await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
@@ -22,11 +24,17 @@ void main() {
     ),
   );
 
-  runApp(const MailWeaveApp());
+  // Check whether the user has already seen the intro.
+  final prefs = await SharedPreferences.getInstance();
+  final bool introSeen = prefs.getBool('intro_seen') ?? false;
+
+  runApp(MailWeaveApp(introSeen: introSeen));
 }
 
 class MailWeaveApp extends StatelessWidget {
-  const MailWeaveApp({super.key});
+  const MailWeaveApp({super.key, required this.introSeen});
+
+  final bool introSeen;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +49,8 @@ class MailWeaveApp extends StatelessWidget {
         ),
         fontFamily: 'Comfortaa',
       ),
-      home: const IntroScreen(),
+      // Show the intro only on first launch; go straight home afterwards.
+      home: introSeen ? const HomeScreen() : const IntroScreen(),
     );
   }
 }
