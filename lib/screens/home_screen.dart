@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../services/auth_service.dart';
-import 'login_screen.dart';
 
-/// Placeholder home screen shown after a successful OAuth sign-in.
-/// The threaded mail tree view will live here.
+/// Shown after a successful OAuth sign-in. The threaded mail tree view will
+/// live here; for now it's a placeholder.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -15,8 +14,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // Light-blue / grey theme
   static const Color _lightBlue = Color(0xFF4A9FE3);
-  static const Color _greyDark  = Color(0xFF37474F);
-  static const Color _greyMid   = Color(0xFF607D8B);
+  static const Color _greyDark = Color(0xFF37474F);
+  static const Color _greyMid = Color(0xFF607D8B);
 
   final AuthService _auth = AuthService();
   String? _profileEmail;
@@ -43,39 +42,20 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _signOut() async {
-    await _auth.signOut();
-    if (!mounted) return;
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const LoginScreen()),
-    );
-  }
+  /// Bottom-right, blue, circle-outlined floating button. Tappable (shows
+  /// press feedback) but intentionally performs no action yet.
+  Widget _menuButton() => FloatingActionButton(
+    backgroundColor: Colors.transparent,
+    foregroundColor: _lightBlue,
+    shape: const CircleBorder(side: BorderSide(color: _lightBlue, width: 2)),
+    onPressed: () {},
+    child: const Icon(Icons.account_circle_outlined),
+  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: _lightBlue,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          'MailWeave',
-          style: TextStyle(
-            fontFamily:  'Playwrite US Modern',
-            fontWeight:  FontWeight.w400,
-            fontSize:    22,
-            color:       Colors.white,
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
-            onPressed: _signOut,
-            tooltip: 'Sign out',
-          ),
-        ],
-      ),
       body: _loading
           ? const Center(child: CircularProgressIndicator(color: _lightBlue))
           : Center(
@@ -94,10 +74,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         : 'Welcome',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontFamily:  'Playwrite US Modern',
-                      fontWeight:  FontWeight.w400,
-                      fontSize:    20,
-                      color:       _greyDark,
+                      fontFamily: 'Playwrite US Modern',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                      color: _greyDark,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -107,17 +87,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       'Your threaded mail view will appear here.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontFamily:  'Comfortaa',
-                        fontWeight:  FontWeight.w300,
-                        fontSize:    14,
-                        color:       _greyMid,
-                        height:      1.6,
+                        fontFamily: 'Comfortaa',
+                        fontWeight: FontWeight.w300,
+                        fontSize: 14,
+                        color: _greyMid,
+                        height: 1.6,
                       ),
                     ),
                   ),
                 ],
               ),
             ),
+      // Bottom-right floating circle-outlined button (no action yet).
+      floatingActionButton: _menuButton(),
     );
   }
 }
