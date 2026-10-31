@@ -1,4 +1,4 @@
-package com.example.mailweave
+package io.github.kavimugilrajasekar.mailweave
 
 import io.flutter.embedding.android.FlutterActivity
 
