@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Required for OAuth sign-in and fetching mail over the network -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="mailweave"
         android:name="${applicationName}"
