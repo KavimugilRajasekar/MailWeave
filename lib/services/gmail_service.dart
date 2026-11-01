@@ -64,6 +64,19 @@ class GmailService {
     );
   }
 
+  /// Re-fetch a single conversation by id (full) and rebuild its reply tree.
+  /// Used to detect new replies — i.e. branch growth — on conversations that
+  /// are already loaded. Returns null if the thread can't be fetched.
+  Future<EmailThread?> fetchThread(String id) async {
+    try {
+      final full = await _gmail.users.threads.get('me', id, format: 'full');
+      final parsed = _parseThread(full);
+      return parsed.isEmpty ? null : parsed;
+    } catch (_) {
+      return null;
+    }
+  }
+
   EmailThread _parseThread(Thread thread) {
     final messages = <EmailMessage>[
       for (final m in thread.messages ?? const <Message>[])

@@ -116,11 +116,28 @@ class _ConversationListState extends State<ConversationList> {
       final page =
           await widget.service.listConversations(category: widget.category);
       if (!mounted) return;
+
+      // Fresh versions of every conversation returned in the latest first
+      // page of the inbox.
+      final freshById = <String, EmailThread>{
+        for (final t in page.threads) t.id: t,
+      };
+
+      // Re-check every already-loaded conversation that wasn't in that fresh
+      // first page, so branch growth (new replies) on older loaded threads is
+      // detected too — not just the top of the inbox.
+      if (merge && hadData) {
+        final olderIds = _threads
+            .where((t) => !freshById.containsKey(t.id))
+            .map((t) => t.id)
+            .toList();
+        freshById.addAll(await _recheckThreads(olderIds));
+      }
+
       setState(() {
         if (merge && hadData) {
           // Keep loaded older mail; insert brand-new conversations at the top
           // and refresh metadata of existing ones (no scroll jump).
-          final freshById = {for (final t in page.threads) t.id: t};
           final existingIds = _threads.map((t) => t.id).toSet();
           final newOnes =
               page.threads.where((t) => !existingIds.contains(t.id)).toList();
@@ -151,6 +168,44 @@ class _ConversationListState extends State<ConversationList> {
         // otherwise keep showing cached / loaded mail
       });
     }
+  }
+
+  /// Re-fetch the given conversation ids (in parallel) and return the ones
+  /// whose reply tree has grown or whose metadata changed, keyed by thread id.
+  Future<Map<String, EmailThread>> _recheckThreads(List<String> ids) async {
+    if (ids.isEmpty) return <String, EmailThread>{};
+    final fetched =
+        await Future.wait(ids.map((id) => widget.service.fetchThread(id)));
+    final changed = <String, EmailThread>{};
+    for (var i = 0; i < ids.length; i++) {
+      final fresh = fetched[i];
+      if (fresh == null) continue;
+      final old = _findThread(ids[i]);
+      if (old == null) continue;
+      if (_threadChanged(old, fresh)) changed[ids[i]] = fresh;
+    }
+    return changed;
+  }
+
+  EmailThread? _findThread(String id) {
+    for (final t in _threads) {
+      if (t.id == id) return t;
+    }
+    return null;
+  }
+
+  /// True when [fresh] differs from [old] in a way the UI should reflect: a new
+  /// or removed message (branch growth), a latest-date change, or a flip in
+  /// read / replied / attachment flags.
+  bool _threadChanged(EmailThread old, EmailThread fresh) {
+    if (fresh.messageCount != old.messageCount) return true;
+    if (fresh.latestDate != old.latestDate) return true;
+    if (fresh.hasUnread != old.hasUnread) return true;
+    if (fresh.hasUserReply != old.hasUserReply) return true;
+    if (fresh.hasAttachments != old.hasAttachments) return true;
+    final oldIds = old.messages.map((m) => m.id).toSet();
+    final newIds = fresh.messages.map((m) => m.id).toSet();
+    return oldIds.length != newIds.length || !oldIds.containsAll(newIds);
   }
 
   Future<void> _persist() async {
