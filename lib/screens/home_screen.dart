@@ -79,15 +79,18 @@ class _HomeScreenState extends State<HomeScreen> {
     final cs = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-      child: Text(
-        _userName ?? '',
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          fontFamily: 'Playwrite US Modern',
-          fontWeight: FontWeight.w400,
-          fontSize: 26,
-          color: cs.onSurface,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          _userName ?? '',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontFamily: 'Playwrite US Modern',
+            fontWeight: FontWeight.w400,
+            fontSize: 26,
+            color: cs.onSurface,
+          ),
         ),
       ),
     );
