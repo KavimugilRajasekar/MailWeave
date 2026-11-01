@@ -53,6 +53,7 @@ class EmailMessage {
     required this.from,
     required this.to,
     required this.cc,
+    this.bcc = const <EmailAddress>[],
     required this.date,
     required this.snippet,
     required this.bodyText,
@@ -75,6 +76,11 @@ class EmailMessage {
   final EmailAddress from;
   final List<EmailAddress> to;
   final List<EmailAddress> cc;
+
+  /// Blind-copy recipients (usually empty in received mail; present on sent
+  /// copies).
+  final List<EmailAddress> bcc;
+
   final DateTime? date;
   final String snippet;
 
@@ -113,6 +119,7 @@ class EmailMessage {
       from: from,
       to: _parseAddresses(headers['to']),
       cc: _parseAddresses(headers['cc']),
+      bcc: _parseAddresses(headers['bcc']),
       date: date,
       snippet: (message.snippet ?? '').trim(),
       bodyText: _extractBody(message.payload),
@@ -135,6 +142,7 @@ class EmailMessage {
         'from': from.toJson(),
         'to': to.map((a) => a.toJson()).toList(),
         'cc': cc.map((a) => a.toJson()).toList(),
+        'bcc': bcc.map((a) => a.toJson()).toList(),
         'date': date?.toIso8601String(),
         'snippet': snippet,
         'unread': unread,
@@ -161,6 +169,9 @@ class EmailMessage {
             .map((e) => EmailAddress.fromJson((e as Map).cast<String, Object?>()))
             .toList(),
         cc: ((json['cc'] as List<dynamic>?) ?? const [])
+            .map((e) => EmailAddress.fromJson((e as Map).cast<String, Object?>()))
+            .toList(),
+        bcc: ((json['bcc'] as List<dynamic>?) ?? const [])
             .map((e) => EmailAddress.fromJson((e as Map).cast<String, Object?>()))
             .toList(),
         date: json['date'] == null ? null : DateTime.tryParse(json['date'] as String),

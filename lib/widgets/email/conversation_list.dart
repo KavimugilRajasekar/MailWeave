@@ -6,6 +6,7 @@ import '../../models/email_thread.dart';
 import '../../models/inbox_category.dart';
 import '../../services/gmail_service.dart';
 import '../../services/mail_cache.dart';
+import '../../screens/conversation_tree_screen.dart';
 import '../common/empty_mail_view.dart';
 import '../common/error_view.dart';
 import '../common/loading_view.dart';
@@ -247,6 +248,18 @@ class _ConversationListState extends State<ConversationList> {
     }
   }
 
+  /// Open a conversation in the full-screen tree visualiser.
+  void _openTree(EmailThread t) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ConversationTreeScreen(
+          service: widget.service,
+          thread: t,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_loading) return const LoadingView(message: 'Loading your mail…');
@@ -273,7 +286,11 @@ class _ConversationListState extends State<ConversationList> {
         rows.add(_dateHeader(_dateLabel(d), theme, cs));
         lastDayKey = dayKey;
       }
-      rows.add(ConversationCard(key: ValueKey(t.id), thread: t));
+      rows.add(ConversationCard(
+        key: ValueKey(t.id),
+        thread: t,
+        onOpen: () => _openTree(t),
+      ));
       rows.add(_divider(cs));
     }
 

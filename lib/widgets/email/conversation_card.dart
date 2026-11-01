@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 import '../../models/email_thread.dart';
-import 'email_tree_view.dart';
 
-/// A conversation summary that expands to reveal its reply tree.
+/// A conversation summary. Tapping opens the full conversation tree page.
 class ConversationCard extends StatefulWidget {
-  const ConversationCard({super.key, required this.thread});
+  const ConversationCard({super.key, required this.thread, required this.onOpen});
 
   final EmailThread thread;
+
+  /// Invoked when the card is tapped — opens the conversation tree page.
+  final VoidCallback onOpen;
 
   @override
   State<ConversationCard> createState() => _ConversationCardState();
 }
 
 class _ConversationCardState extends State<ConversationCard> {
-  bool _expanded = false;
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -32,7 +32,7 @@ class _ConversationCardState extends State<ConversationCard> {
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () => setState(() => _expanded = !_expanded),
+        onTap: widget.onOpen,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(14, 10, 12, 10),
           child: Column(
@@ -83,7 +83,7 @@ class _ConversationCardState extends State<ConversationCard> {
                               style: theme.textTheme.labelSmall?.copyWith(color: cs.onSurfaceVariant)),
                         ],
                       ),
-                      Icon(_expanded ? Icons.expand_less : Icons.expand_more, color: cs.onSurfaceVariant),
+                      Icon(Icons.chevron_right, color: cs.onSurfaceVariant),
                     ],
                   ),
                 ],
@@ -91,10 +91,6 @@ class _ConversationCardState extends State<ConversationCard> {
               if (t.hasUserReply) ...[
                 const SizedBox(height: 6),
                 Wrap(spacing: 6, runSpacing: 4, children: [_tag(Icons.reply, 'Replied', cs)]),
-              ],
-              if (_expanded) ...[
-                const SizedBox(height: 10),
-                EmailTreeView(thread: t),
               ],
             ],
           ),
