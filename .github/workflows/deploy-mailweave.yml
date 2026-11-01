@@ -22,7 +22,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./mailweave-webpage
-          destination_folder: mailweave
+          destination_dir: mailweave
           publish_branch: gh-pages
           user_name: 'GitHub Action'
+          user_email: 'action@github.com'
           commit_message: 'Deploy MailWeave static site'
