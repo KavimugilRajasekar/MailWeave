@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | MailWeave</title>
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/blueprint.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400;500;600;700&display=swap">
+</head>
+<body style="font-family: 'General Sans', sans-serif;">
+    <header class="site-header">
+        <div class="container nav-row">
+            <a class="brand-logo-text" href="index.html" style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; text-decoration: none; color: var(--grid); font-size: 1.2rem;">MailWeave</a>
+            <nav class="nav-links">
+                <a href="index.html">01. Index</a>
+                <a href="changelog.html">02. Changelog</a>
+                <a href="privacy.html" class="active">03. Privacy</a>
+                <a href="terms.html">04. Terms</a>
+            </nav>
+            <div class="nav-actions">
+                <a class="btn-ghost" href="https://KavimugilRajasekar.github.io" style="font-size: 0.8rem;">← Portfolio</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-shell">
+        <main class="container">
+            <div class="page-title-block">
+                <h1 class="page-title">Privacy Policy</h1>
+                <span class="label">Security & Data</span>
+            </div>
+
+            <section class="section" style="line-height: 1.6; max-width: 800px;">
+                <div class="stack-2">
+                    <article class="cell">
+                        <h3 class="cell-title">1. Data Collection</h3>
+                        <p>MailWeave is a read-only email visualization client. We use the Google Gmail API to fetch your email threads and messages for the sole purpose of rendering them in our threaded tree-branch view.</p>
+                    </article>
+                    <article class="cell">
+                        <h3 class="cell-title">2. Google OAuth Scope</h3>
+                        <p>To function, MailWeave requests the <code class="mono-tag">gmail.readonly</code> scope. This allows the application to read your messages but <strong style="color: var(--forest);">does not</strong> allow it to send, delete, or modify any of your emails.</p>
+                    </article>
+                    <article class="cell">
+                        <h3 class="cell-title">3. Data Storage & Security</h3>
+                        <p>MailWeave follows a privacy-first architecture. We do not store your emails on any external servers. All data is processed locally on your Android device. Your authentication tokens are stored securely using the <strong>Android Keystore</strong> via <code class="mono-tag">flutter_secure_storage</code>, ensuring they are encrypted and inaccessible to other apps.</p>
+                    </article>
+                    <article class="cell">
+                        <h3 class="cell-title">4. Third-Party Sharing</h3>
+                        <p>We do not sell, trade, or otherwise transfer your personal information or email content to any third parties. Your data remains exclusively on your device.</p>
+                    </article>
+                    <article class="cell">
+                        <h3 class="cell-title">5. Changes to This Policy</h3>
+                        <p>We may update our Privacy Policy from time to time. Any changes will be reflected on this page.</p>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

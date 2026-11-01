@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MailWeave | Untangle Your Inbox</title>
+    <!-- Portfolio Blueprint Theme -->
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/blueprint.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <!-- Portfolio Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400;500;600;700&display=swap">
+    <style>
+        :root {
+            --accent-blue: #4A9FE3;
+        }
+        body { font-family: 'General Sans', sans-serif; }
+        .brand-logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; text-decoration: none; color: var(--grid); }
+        .hero-accent { color: var(--accent-blue); }
+        .btn-mailweave {
+            background: var(--forest);
+            color: var(--paper);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: opacity 0.2s;
+        }
+        .btn-mailweave:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container nav-row">
+            <a class="brand-logo-text" href="index.html" style="font-size: 1.2rem;">MailWeave</a>
+            <nav class="nav-links">
+                <a href="index.html" class="active">01. Index</a>
+                <a href="changelog.html">02. Changelog</a>
+                <a href="privacy.html">03. Privacy</a>
+                <a href="terms.html">04. Terms</a>
+            </nav>
+            <div class="nav-actions">
+                <a class="btn-ghost" href="https://KavimugilRajasekar.github.io" style="font-size: 0.8rem;">← Portfolio</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-shell">
+        <main class="container">
+            <section class="hero">
+                <div class="hero-content">
+                    <span class="status-badge"><span class="dot"></span>Development</span>
+                    <h1>Untangle Your<br><span class="hero-accent">Conversations</span></h1>
+                    <p class="hero-sub">MailWeave transforms linear email threads into visual tree branches, allowing you to track complex discussions at a glance.</p>
+                    <div class="hero-actions">
+                        <a class="btn-mailweave" href="#">Coming Soon to Android</a>
+                    </div>
+                </div>
+                <div class="wireframe" style="background: var(--paper); border: 1px solid var(--grid); border-radius: 12px; height: 300px; display: flex; align-items: center; justify-content: center; color: var(--grid); font-family: 'JetBrains Mono', monospace;">
+                    [ Tree-Branch Visualization Preview ]
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-head">
+                    <h2>Core Features</h2>
+                    <span class="label">01 — Capabilities</span>
+                </div>
+                <div class="bento">
+                    <article class="cell">
+                        <span class="cell-label cell-label--mint">01. Visualization</span>
+                        <h3>Threaded Tree View</h3>
+                        <p>Visual representation of email threads as growing branches. See exactly who replied to whom without the linear clutter.</p>
+                    </article>
+                    <article class="cell">
+                        <span class="cell-label cell-label--coral">02. Auth</span>
+                        <h3>Secure Google OAuth</h3>
+                        <p>Integrated with Google OAuth 2.0 for seamless and secure sign-in using your existing Google account.</p>
+                    </article>
+                    <article class="cell">
+                        <span class="cell-label cell-label--gold">03. Privacy</span>
+                        <h3>Read-Only Access</h3>
+                        <p>Privacy-first architecture using <code class="mono-tag">gmail.readonly</code> scope. No emails are ever modified or sent.</p>
+                    </article>
+                    <article class="cell">
+                        <span class="cell-label cell-label--mint">04. Platform</span>
+                        <h3>Material 3 / Flutter</h3>
+                        <p>A contemporary Android experience built with Flutter, featuring a soothing blue-grey palette and modern UI.</p>
+                    </article>
+                </div>
+            </section>
+
+            <footer class="site-footer">
+                <div class="container">
+                    <p>&copy; 2026 MailWeave. Built by Kavimugil Rajasekar.</p>
+                    <p class="mono-tag">Built with blueprint v2.0 // forest</p>
+                </div>
+            </footer>
+        </main>
+    </div>
+</body>
+</html>
