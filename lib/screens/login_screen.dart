@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 24),
                     const Text(
-                      'MailWeave',
+                      'Mail Weave',
                       style: TextStyle(
                         fontFamily: 'Playwrite US Modern',
                         fontWeight: FontWeight.w400,
@@ -106,6 +106,43 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Icon(Icons.lock_outline, size: 14, color: _lightBlue),
+                            SizedBox(width: 6),
+                            Text(
+                              'Only Gmail read-only access',
+                              style: TextStyle(
+                                fontFamily: 'Comfortaa',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                                color: _greyDark,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'MailWeave never writes or sends your mail, and your credentials are stored securely and privately on your device.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Comfortaa',
+                            fontWeight: FontWeight.w300,
+                            fontSize: 12,
+                            color: _greyMid,
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
