@@ -18,10 +18,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const Color _lightBlue = Color(0xFF4A9FE3);
-
   final AuthService _auth = AuthService();
+  final ConversationListController _listController =
+      ConversationListController();
   GmailService? _service;
+  String? _userName;
   bool _loading = true;
   String? _error;
   InboxCategory _category = InboxCategory.primary;
@@ -60,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (!mounted) return;
       setState(() {
         _service = GmailService(gmail, currentUserEmail: email);
+        _userName = email;
         _loading = false;
       });
     } catch (_) {
@@ -71,57 +73,22 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// Top bar: the account icon sits at the top-left, next to the decorative
-  /// search field. Neither has functionality yet.
-  Widget _topBar(BuildContext context) {
-    final theme = Theme.of(context);
-    final cs = theme.colorScheme;
+  /// App bar replacement: shows the signed-in user's email as their name,
+  /// rendered in the Playwrite US Modern handwriting font.
+  Widget _userNameHeader(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
-      child: Row(
-        children: [
-          _accountButton(cs),
-          const SizedBox(width: 10),
-          Expanded(child: _searchField(theme, cs)),
-        ],
-      ),
-    );
-  }
-
-  /// Blue, circle-outlined account button (no action) — formerly the FAB.
-  Widget _accountButton(ColorScheme cs) {
-    return SizedBox(
-      width: 48,
-      height: 48,
-      child: Material(
-        color: Colors.transparent,
-        shape: const CircleBorder(side: BorderSide(color: _lightBlue, width: 2)),
-        child: InkWell(
-          customBorder: const CircleBorder(),
-          onTap: () {},
-          child: const Icon(Icons.account_circle_outlined, color: _lightBlue),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      child: Text(
+        _userName ?? '',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontFamily: 'Playwrite US Modern',
+          fontWeight: FontWeight.w400,
+          fontSize: 26,
+          color: cs.onSurface,
         ),
-      ),
-    );
-  }
-
-  Widget _searchField(ThemeData theme, ColorScheme cs) {
-    return Container(
-      height: 48,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: cs.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.search, color: cs.onSurfaceVariant, size: 20),
-          const SizedBox(width: 12),
-          Text(
-            'Search mail',
-            style: theme.textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
-          ),
-        ],
       ),
     );
   }
@@ -175,6 +142,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
+    final bool showingList = !_loading && _error == null && _service != null;
+
     final Widget body;
     if (_loading) {
       body = const LoadingView(message: 'Loading your mail…');
@@ -186,6 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body = ConversationList(
         service: _service!,
         category: _category,
+        controller: _listController,
         key: ValueKey(_category),
       );
     }
@@ -195,12 +165,20 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            _topBar(context),
+            _userNameHeader(context),
             _categoryTabs(context),
             Expanded(child: body),
           ],
         ),
       ),
+      // Manually fetch older ("previous") conversations.
+      floatingActionButton: showingList
+          ? FloatingActionButton.small(
+              heroTag: 'loadMoreMails',
+              onPressed: _listController.loadMore,
+              child: const Icon(Icons.download),
+            )
+          : null,
     );
   }
 }

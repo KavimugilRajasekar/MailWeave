@@ -11,6 +11,18 @@ import '../common/error_view.dart';
 import '../common/loading_view.dart';
 import 'conversation_card.dart';
 
+/// Lets a parent (e.g. the home screen's "load older" button) trigger the
+/// list's pagination manually.
+class ConversationListController {
+  Future<void> Function()? _loadMore;
+
+  void _attach(Future<void> Function() loadMore) => _loadMore = loadMore;
+
+  /// Manually fetch the next (older) page of conversations. No-op when the
+  /// list is already loading more or there are no further pages.
+  Future<void> loadMore() => _loadMore?.call() ?? Future<void>.value();
+}
+
 /// Paginated conversation list.
 ///
 /// - Shows cached mail instantly, then refreshes from Gmail in the background.
@@ -23,10 +35,14 @@ class ConversationList extends StatefulWidget {
     required this.category,
     this.autoRefreshInterval = const Duration(seconds: 3),
     this.cache,
+    this.controller,
   });
 
   final GmailService service;
   final InboxCategory category;
+
+  /// Optional handle a parent can use to trigger "load older" manually.
+  final ConversationListController? controller;
 
   /// Background refresh cadence. Pass [Duration.zero] to disable (e.g. tests).
   final Duration autoRefreshInterval;
@@ -54,6 +70,7 @@ class _ConversationListState extends State<ConversationList> {
     super.initState();
     _cache = widget.cache ?? MailCache();
     _controller.addListener(_onScroll);
+    widget.controller?._attach(_loadMore);
     _init();
   }
 
