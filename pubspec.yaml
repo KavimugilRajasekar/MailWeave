@@ -21,6 +21,7 @@ dependencies:
   googleapis_auth: ^2.0.0
   http: ^1.2.0
   flutter_secure_storage: ^9.2.4
+  android_intent_plus: ^5.0.0
 
 dev_dependencies:
   flutter_test:
