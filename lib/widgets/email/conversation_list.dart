@@ -183,13 +183,35 @@ class _ConversationListState extends State<ConversationList> {
     }
     if (_threads.isEmpty) return const EmptyMailView();
 
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    // Date-grouped layout: a top divider, then per date group a header
+    // followed by its mails. Every mail is trailed by a divider, which also
+    // separates consecutive mails, separates groups, and closes the list —
+    // matching the "divider, header, mail, divider, mail, divider, header…"
+    // pattern.
+    final rows = <Widget>[];
+    String? lastDayKey;
+    for (final t in _threads) {
+      final d = t.latestDate;
+      final dayKey = d == null ? '' : '${d.year}-${d.month}-${d.day}';
+      if (dayKey != lastDayKey) {
+        if (rows.isEmpty) rows.add(_divider(cs));
+        rows.add(_dateHeader(_dateLabel(d), theme, cs));
+        lastDayKey = dayKey;
+      }
+      rows.add(ConversationCard(key: ValueKey(t.id), thread: t));
+      rows.add(_divider(cs));
+    }
+
     // No pull-to-refresh spinner — the list silently auto-refreshes instead.
     return ListView.builder(
       controller: _controller,
       padding: const EdgeInsets.only(top: 8, bottom: 24),
-      itemCount: _threads.length + (_loadingMore ? 1 : 0),
+      itemCount: rows.length + (_loadingMore ? 1 : 0),
       itemBuilder: (context, index) {
-        if (index == _threads.length) {
+        if (index == rows.length) {
           return const Padding(
             padding: EdgeInsets.all(16),
             child: Center(
@@ -201,11 +223,37 @@ class _ConversationListState extends State<ConversationList> {
             ),
           );
         }
-        return ConversationCard(
-          key: ValueKey(_threads[index].id),
-          thread: _threads[index],
-        );
+        return rows[index];
       },
     );
+  }
+
+  Widget _divider(ColorScheme cs) =>
+      Divider(height: 1, thickness: 0.5, color: cs.outlineVariant);
+
+  Widget _dateHeader(String label, ThemeData theme, ColorScheme cs) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(14, 14, 12, 6),
+      child: Text(
+        label,
+        style: theme.textTheme.labelLarge?.copyWith(
+          color: cs.primary,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.3,
+        ),
+      ),
+    );
+  }
+
+  /// "Today" / "Yesterday" / dd-MM-yyyy for everything older.
+  String _dateLabel(DateTime? d) {
+    if (d == null) return 'Undated';
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final that = DateTime(d.year, d.month, d.day);
+    final diff = today.difference(that).inDays;
+    if (diff == 0) return 'Today';
+    if (diff == 1) return 'Yesterday';
+    return '${d.day.toString().padLeft(2, '0')}-${d.month.toString().padLeft(2, '0')}-${d.year}';
   }
 }

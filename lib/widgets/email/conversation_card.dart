@@ -29,7 +29,6 @@ class _ConversationCardState extends State<ConversationCard> {
       color: cs.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: cs.outlineVariant),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
