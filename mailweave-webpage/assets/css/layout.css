@@ -1,0 +1,94 @@
+/* ============================================================
+   layout.css — Page scaffolding & responsive helpers
+   Most component styles live in blueprint.css. This file holds
+   the page-level container, grid utilities, and a few helpers.
+   ============================================================ */
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--section-pad-x);
+  width: 100%;
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+.split-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; align-items: start; }
+.split-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: start; }
+
+.stack-2 > * + * { margin-top: 16px; }
+.stack-3 > * + * { margin-top: 24px; }
+.stack-4 > * + * { margin-top: 32px; }
+.stack-6 > * + * { margin-top: 48px; }
+
+.text-center { text-align: center; }
+.text-mono   { font-family: var(--font-mono); }
+.text-upper  { text-transform: uppercase; letter-spacing: var(--tracking-mono); }
+.text-forest { color: var(--forest); }
+.text-mint   { color: var(--mint); }
+
+.divider {
+  height: 1px;
+  background: var(--hairline);
+  border: none;
+  margin: 48px 0;
+}
+
+.page-title-block {
+  padding: 120px var(--section-pad-x) 48px;
+  border-bottom: 1px solid var(--hairline);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: end;
+}
+.page-title-block h1 {
+  font-size: var(--fs-display-lg);
+  color: var(--forest);
+  letter-spacing: -0.03em;
+}
+.page-title-block .label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono);
+  color: var(--grid);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.page-title-block .label::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--forest);
+}
+/* Subtitle paragraph: mirrors the .label treatment so it sits flush
+   with the bottom of the title block instead of floating mid-cell. */
+.page-title-block > p {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-md);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono);
+  color: var(--grid);
+  line-height: 1.5;
+  max-width: 56ch;
+  margin: 0;
+  align-self: end;
+  padding-bottom: 8px;
+}
+
+@media (min-width: 769px) {
+  .page-title-block > p {
+    border-left: 1px solid var(--hairline);
+    padding-left: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4,
+  .split-2-1, .split-1-2,
+  .page-title-block { grid-template-columns: 1fr; }
+}

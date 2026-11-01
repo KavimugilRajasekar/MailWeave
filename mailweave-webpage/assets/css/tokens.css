@@ -1,0 +1,57 @@
+/* ============================================================
+   tokens.css — Blueprint Design System v2.0
+   Single source of truth for palette, typography, hairlines.
+   Loaded by every page in the workspace and bottle-art/.
+   ============================================================ */
+
+:root {
+  /* ---------- Palette ---------- */
+  --paper: #F7F7F5;
+  --forest: #1A3C2B;
+  --grid: #3A3A38;
+  --coral: #FF8C69;
+  --mint: #9EFFBF;
+  --gold: #F4D35E;
+
+  /* White-on-forest surfaces */
+  --paper-on-forest: #FFFFFF;
+
+  /* ---------- Hairlines ---------- */
+  --hairline:         rgba(58, 58, 56, 0.20); /* #3A3A38 / 20% */
+  --hairline-strong:  rgba(58, 58, 56, 0.30); /* mosaic bg      */
+  --forest-hairline:  rgba(26, 60, 43, 0.20); /* #1A3C2B / 20%  */
+  --connector-line:   rgba(26, 60, 43, 0.20); /* net graph      */
+
+  /* ---------- Typography ---------- */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body:    'General Sans', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --fs-display-xl: clamp(48px, 8vw, 96px);
+  --fs-display-lg: clamp(36px, 5vw, 64px);
+  --fs-display-md: clamp(28px, 3.5vw, 44px);
+  --fs-h2:         clamp(22px, 2.6vw, 32px);
+  --fs-h3:         clamp(18px, 1.8vw, 22px);
+  --fs-body:       16px;
+  --fs-body-sm:    14px;
+  --fs-mono-md:    14px;
+  --fs-mono-sm:    12px;
+  --fs-mono-xs:    10px;
+
+  --lh-display:    0.9;
+  --lh-body:       1.6;
+  --tracking-mono: 0.1em;
+
+  /* ---------- Geometry ---------- */
+  --radius: 2px;
+  --radius-0: 0px;
+
+  /* ---------- Layout ---------- */
+  --container: 1200px;
+  --section-pad-y: 96px;
+  --section-pad-x: 32px;
+  --gap: 1px;
+
+  /* ---------- Tubes dimming ---------- */
+  --tubes-opacity: 0.45;
+}
